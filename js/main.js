@@ -53,3 +53,74 @@ if (seeMoreBtn) {
 
 }
 
+// Contact Form Validation
+
+const contactForm = document.getElementById("contact-form");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    // Get input values
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    // Get error elements
+    const errorMessages = document.querySelectorAll(".error-message");
+    const inputs = contactForm.querySelectorAll("input, textarea");
+
+    // Clear previous errors
+    errorMessages.forEach(function (error) {
+      error.textContent = "";
+    });
+
+    inputs.forEach(function (input) {
+      input.classList.remove("invalid");
+    });
+
+    let isValid = true;
+
+    // Name validation
+    if (name === "") {
+      showError(0, "Name is required.");
+      isValid = false;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email === "") {
+      showError(1, "Email is required.");
+      isValid = false;
+    } else if (!emailPattern.test(email)) {
+      showError(1, "Please enter a valid email.");
+      isValid = false;
+    }
+
+    // Message validation
+    if (message === "") {
+      showError(2, "Message is required.");
+      isValid = false;
+    }
+
+    // Success
+    if (isValid) {
+      document.getElementById("form-status").textContent =
+        "Validation successful! Your message is ready.";
+
+      contactForm.reset();
+    } else {
+      document.getElementById("form-status").textContent = "";
+    }
+
+    // Error function
+    function showError(index, message) {
+      errorMessages[index].textContent = message;
+      inputs[index].classList.add("invalid");
+    }
+
+  });
+}
+
